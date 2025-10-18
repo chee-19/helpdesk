@@ -2,14 +2,13 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { Router } from './components/Router';
 import { Navigation } from './components/Navigation';
 import { Submit } from './pages/Submit';
-import { Login } from './pages/Login';
 import { Inbox } from './pages/Inbox';
 import { TicketDetail } from './pages/TicketDetail';
 import { Admin } from './pages/Admin';
 import { Metrics } from './pages/Metrics';
 
 function AppRoutes() {
-  const { loading, profile } = useAuth();
+  const { loading } = useAuth();
 
   if (loading) {
     return (
@@ -26,15 +25,6 @@ function AppRoutes() {
 
   if (currentPath === '/submit') {
     return <Submit />;
-  }
-
-  if (!profile && currentPath !== '/login') {
-    window.location.href = '/login';
-    return null;
-  }
-
-  if (!profile) {
-    return <Login />;
   }
 
   return (

@@ -1,11 +1,10 @@
 import { useAuth } from '../contexts/AuthContext';
 import { Link } from './Link';
-import { Inbox, BarChart3, Settings, LogOut, Send } from 'lucide-react';
+import { Inbox, BarChart3, Settings, LogOut, Send, User } from 'lucide-react';
 
 export function Navigation() {
-  const { profile, signOut } = useAuth();
-
-  if (!profile) return null;
+  const { profile, signOut, user } = useAuth();
+  const isAdmin = profile?.role === 'admin';
 
   return (
     <nav className="bg-white border-b border-slate-200 shadow-sm">
@@ -33,7 +32,7 @@ export function Navigation() {
                 Metrics
               </Link>
 
-              {profile.role === 'admin' && (
+              {isAdmin && (
                 <Link
                   href="/admin"
                   className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition"
@@ -55,18 +54,23 @@ export function Navigation() {
             </Link>
 
             <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
-              <div className="text-sm">
-                <div className="font-medium text-slate-900">{profile.email}</div>
-                <div className="text-xs text-slate-500 capitalize">{profile.role}</div>
+              <div className="text-sm flex items-center gap-2 text-slate-600">
+                <User className="w-4 h-4" />
+                <div>
+                  <div className="font-medium text-slate-900">{profile?.email ?? 'Guest'}</div>
+                  <div className="text-xs text-slate-500 capitalize">{profile?.role ?? 'viewer'}</div>
+                </div>
               </div>
 
-              <button
-                onClick={() => signOut()}
-                className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-lg transition"
-                title="Sign out"
-              >
-                <LogOut className="w-4 h-4" />
-              </button>
+              {user && (
+                <button
+                  onClick={() => signOut()}
+                  className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-lg transition"
+                  title="Sign out"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              )}
             </div>
           </div>
         </div>
