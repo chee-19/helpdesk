@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { useTickets } from '../hooks/useTickets';
-import { useAuth } from '../contexts/AuthContext';
 import { Filter, Clock, AlertTriangle } from 'lucide-react';
 import { TicketCard } from '../components/TicketCard';
 
 export function Inbox() {
-  const { profile } = useAuth();
   const [filters, setFilters] = useState({
     status: '',
     priority: '',
@@ -13,10 +11,6 @@ export function Inbox() {
   });
 
   const { tickets, loading } = useTickets(filters);
-
-  if (!profile) {
-    return <div>Please log in</div>;
-  }
 
   return (
     <div className="min-h-screen bg-slate-50">
